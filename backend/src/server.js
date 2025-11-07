@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
+const { initializeCache } = require('./utils/cache');
+const { checkRateLimit } = require('./utils/abuseProtection');
 const summarizeRoutes = require('./routes/summarize');
 
 const app = express();
@@ -30,6 +32,8 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
+app.use('/api/summarize', checkRateLimit);
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
@@ -49,8 +53,18 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📍 Health check: http://localhost:${PORT}/health`);
-  console.log(`📍 API endpoint: http://localhost:${PORT}/api/summarize`);
+
+async function startServer() {
+  await initializeCache();
+  
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📍 Health check: http://localhost:${PORT}/health`);
+    console.log(`📍 API endpoint: http://localhost:${PORT}/api/summarize`);
+  });
+}
+
+startServer().catch((err) => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });

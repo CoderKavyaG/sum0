@@ -1,5 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const { getCacheKey, setCacheKey } = require('../utils/cache');
 
 async function scrapeMetaTags(url) {
   console.log('📋 [1/3] Trying Open Graph meta tags...');
@@ -137,10 +138,18 @@ async function scrapeLinkedInPost(url) {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
   
   try {
+    const cacheKey = `scrape:${url}`;
+    const cached = await getCacheKey(cacheKey);
+    if (cached) {
+      console.log('⚡ Returning cached result\n');
+      return cached;
+    }
+    
     let content = await scrapeMetaTags(url);
     if (content) {
       const cleaned = cleanText(content);
       if (cleaned) {
+        await setCacheKey(cacheKey, cleaned, 86400);
         console.log('\n✅ SUCCESS via Meta Tags');
         console.log(`📝 Extracted ${cleaned.length} characters\n`);
         return cleaned;
@@ -151,6 +160,7 @@ async function scrapeLinkedInPost(url) {
     if (content) {
       const cleaned = cleanText(content);
       if (cleaned) {
+        await setCacheKey(cacheKey, cleaned, 86400);
         console.log('\n✅ SUCCESS via CORS Proxy');
         console.log(`📝 Extracted ${cleaned.length} characters\n`);
         return cleaned;
@@ -161,6 +171,7 @@ async function scrapeLinkedInPost(url) {
     if (content) {
       const cleaned = cleanText(content);
       if (cleaned) {
+        await setCacheKey(cacheKey, cleaned, 86400);
         console.log('\n✅ SUCCESS via Direct Fetch');
         console.log(`📝 Extracted ${cleaned.length} characters\n`);
         return cleaned;
@@ -176,121 +187,3 @@ async function scrapeLinkedInPost(url) {
 }
 
 module.exports = { scrapeLinkedInPost };
-
-// ============================================
-// 📝 LEARNING NOTES:
-// ============================================
-//
-// Q: What is Puppeteer?
-// A: A Node.js library that controls Chrome/Chromium browser.
-//    You can automate anything a human can do in a browser.
-//
-// Q: What is a headless browser?
-// A: A browser that runs without a visible window. Faster and uses less resources.
-//    Great for automation and scraping.
-//
-// Q: What are CSS selectors?
-// A: Ways to find elements on a page:
-//    - '.class-name' = find by class
-//    - '#id-name' = find by ID
-//    - '[attribute="value"]' = find by attribute
-//    - 'div.class' = find div with class
-//
-// Q: Why multiple selectors?
-// A: LinkedIn's HTML structure changes. Having fallbacks makes your scraper
-//    more resilient. If one selector fails, try another.
-//
-// Q: What's the difference between innerText and textContent?
-// A: - innerText: Returns visible text (respects CSS display)
-//    - textContent: Returns all text, even if hidden
-//    Usually innerText is better for scraping.
-//
-// Q: Why finally block?
-// A: Ensures browser.close() runs even if there's an error.
-//    Otherwise, you'd have zombie browser processes eating memory!
-//
-// ============================================
-// 🎯 TESTING THIS FUNCTION:
-// ============================================
-//
-// Create a test file: test-scraper.js
-//
-// const { scrapeLinkedInPost } = require('./services/scraper');
-//
-// async function test() {
-//   const url = 'https://www.linkedin.com/posts/...';
-//   try {
-//     const text = await scrapeLinkedInPost(url);
-//     console.log('Scraped text:', text);
-//   } catch (error) {
-//     console.error('Error:', error.message);
-//   }
-// }
-//
-// test();
-//
-// Run: node test-scraper.js
-//
-// ============================================
-// 🐛 DEBUGGING TIPS:
-// ============================================
-//
-// 1. Set headless: false to see the browser:
-//    browser = await puppeteer.launch({ headless: false });
-//
-// 2. Take screenshots to see what Puppeteer sees:
-//    await page.screenshot({ path: 'debug.png' });
-//
-// 3. Log the page HTML:
-//    const html = await page.content();
-//    console.log(html);
-//
-// 4. Increase timeouts if page loads slowly:
-//    await page.goto(url, { timeout: 60000 });
-//
-// 5. Check if element exists before extracting:
-//    const exists = await page.$('.selector') !== null;
-//    console.log('Element exists:', exists);
-//
-// ============================================
-// ⚠️ COMMON ISSUES:
-// ============================================
-//
-// 1. "Navigation timeout":
-//    - LinkedIn is slow or blocking you
-//    - Try increasing timeout
-//    - Check if URL is accessible in regular browser
-//
-// 2. "Element not found":
-//    - LinkedIn changed their HTML structure
-//    - Use browser DevTools to find new selectors
-//    - Right-click element → Inspect → Copy selector
-//
-// 3. "Post is private":
-//    - Only public posts can be scraped
-//    - LinkedIn might require login for some posts
-//    - Test with definitely public posts first
-//
-// 4. "Rate limiting":
-//    - LinkedIn detects too many requests
-//    - Add delays between requests
-//    - Use residential proxies (advanced)
-//
-// ============================================
-// 🚀 ADVANCED IMPROVEMENTS (Optional):
-// ============================================
-//
-// 1. Browser reuse: Keep browser open between requests
-//    (faster, but more complex)
-//
-// 2. Stealth mode: Use puppeteer-extra-plugin-stealth
-//    to avoid detection
-//
-// 3. Retry logic: Retry failed scrapes with exponential backoff
-//
-// 4. Proxy support: Rotate IPs to avoid rate limiting
-//
-// 5. Screenshot on error: Save screenshot when scraping fails
-//    for debugging
-//
-// ============================================
