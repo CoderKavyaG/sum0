@@ -8,12 +8,17 @@ const summarizeRoutes = require('./routes/summarize');
 
 const app = express();
 
-app.use(helmet());
+app.disable('x-powered-by');
 
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type'],
+  credentials: false
+}));
+
+app.use(helmet({
+  crossOriginResourcePolicy: false
 }));
 
 app.use(express.json());
