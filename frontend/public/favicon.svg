@@ -1,0 +1,20 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bracket on the left -->
+  <g stroke="#000000" stroke-width="32" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Vertical line -->
+    <line x1="60" y1="30" x2="60" y2="226"/>
+    <!-- Top horizontal -->
+    <line x1="60" y1="30" x2="130" y2="30"/>
+    <!-- Bottom horizontal -->
+    <line x1="60" y1="226" x2="130" y2="226"/>
+  </g>
+  
+  <!-- Paperclip/Link shape on the right -->
+  <g stroke="#000000" stroke-width="32" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left rounded loop -->
+    <path d="M 150 50 Q 150 30 170 30 Q 190 30 190 50 L 190 206 Q 190 226 170 226 Q 150 226 150 206"/>
+    
+    <!-- Right rounded loop -->
+    <path d="M 216 50 Q 216 30 196 30 Q 176 30 176 50 L 176 206 Q 176 226 196 226 Q 216 226 216 206"/>
+  </g>
+</svg>

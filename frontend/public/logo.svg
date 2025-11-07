@@ -1,0 +1,22 @@
+<svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bracket shape -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="50" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Top left corner -->
+    <path d="M 150 100 L 100 100 L 100 300 L 150 300"/>
+  </g>
+  
+  <!-- Paperclip/Link shape -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="50" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left loop -->
+    <path d="M 200 150 Q 180 150 180 200 Q 180 250 200 250"/>
+    <!-- Right loop -->
+    <path d="M 300 150 Q 320 150 320 200 Q 320 250 300 250"/>
+    <!-- Top connector -->
+    <line x1="200" y1="150" x2="300" y2="150" stroke-width="40"/>
+    <!-- Bottom connector -->
+    <line x1="200" y1="250" x2="300" y2="250" stroke-width="40"/>
+  </g>
+  
+  <!-- Text "sum0" -->
+  <text x="380" y="290" font-family="Arial, Helvetica, sans-serif" font-size="240" font-weight="900" fill="#FFFFFF">sum0</text>
+</svg>

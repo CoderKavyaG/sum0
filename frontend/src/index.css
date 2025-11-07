@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   LEARNING NOTES:
+   ============================================
+   
+   @tailwind base:
+   - Resets default browser styles
+   - Normalizes elements across browsers
+   - Sets base font, colors, etc.
+   
+   @tailwind components:
+   - Imports component classes
+   - You can add your own component classes here
+   
+   @tailwind utilities:
+   - Imports all utility classes (bg-blue-500, p-4, etc.)
+   - This is what makes Tailwind work!
+   
+   ============================================ */
+
+/* ============================================
+   CUSTOM GLOBAL STYLES (Optional)
+   ============================================
+   Add any custom CSS here that applies globally */
+
+/* TODO: Add custom font (optional) */
+/* Hint: 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+*/
+
+/* TODO: Add custom scrollbar (optional) */
+/* Hint:
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+*/
+
+/* TODO: Add smooth scroll (optional) */
+/* Hint:
+html {
+  scroll-behavior: smooth;
+}
+*/
+
+/* ============================================
+   CUSTOM COMPONENT CLASSES (Optional)
+   ============================================
+   Use @layer to add custom reusable classes */
+
+/* TODO: Add custom button class (optional) */
+/* Hint:
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg 
+           hover:bg-blue-700 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg 
+           hover:bg-gray-300 transition-colors;
+  }
+}
+*/
+
+/* TODO: Add custom card class (optional) */
+/* Hint:
+@layer components {
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+  
+  .card-hover {
+    @apply card hover:shadow-xl transition-shadow;
+  }
+}
+*/
+
+/* ============================================
+   CUSTOM ANIMATIONS (Optional)
+   ============================================ */
+
+/* TODO: Add fade-in animation (optional) */
+/* Hint:
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+*/
+
+/* TODO: Add slide-in animation (optional) */
+/* Hint:
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+*/
+
+/* ============================================
+   UTILITY CLASSES (Optional)
+   ============================================ */
+
+/* TODO: Add custom utilities (optional) */
+/* Hint:
+@layer utilities {
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+*/
+
+/* ============================================
+   📝 LEARNING NOTES:
+   ============================================
+   
+   Q: Why use @layer?
+   A: It tells Tailwind where to inject your custom styles.
+      This ensures proper CSS specificity and ordering.
+   
+   Q: What's the difference between components and utilities?
+   A: - Components: Reusable patterns (buttons, cards)
+      - Utilities: Single-purpose classes (text-shadow)
+   
+   Q: Can I use regular CSS?
+   A: Yes! You can mix Tailwind with regular CSS.
+      But try to use Tailwind utilities first.
+   
+   Q: How do I override Tailwind styles?
+   A: Use !important or increase specificity:
+      .my-class {
+        @apply bg-blue-500 !important;
+      }
+   
+   Q: Should I write custom CSS?
+   A: Only if Tailwind doesn't have what you need.
+      Tailwind covers 95% of use cases.
+   
+   ============================================
+   🎯 BEST PRACTICES:
+   ============================================
+   
+   1. Use Tailwind utilities first
+   2. Create custom components for repeated patterns
+   3. Keep custom CSS minimal
+   4. Use @layer for organization
+   5. Use @apply to compose utilities
+   6. Avoid inline styles when possible
+   
+   ============================================
+   🚀 ENHANCEMENT IDEAS:
+   ============================================
+   
+   1. Add custom color palette
+   2. Add custom font families
+   3. Add dark mode styles
+   4. Add print styles
+   5. Add accessibility improvements
+   6. Add custom animations
+   7. Add responsive utilities
+   
+   ============================================ */
