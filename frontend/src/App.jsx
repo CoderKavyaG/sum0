@@ -21,6 +21,7 @@ function App() {
 
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      console.log('API URL:', apiUrl);
       const response = await fetch(`${apiUrl}/api/summarize`, {
         method: 'POST',
         headers: {

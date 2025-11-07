@@ -11,12 +11,9 @@ const app = express();
 app.use(helmet());
 
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://sum0.vercel.app',
-    process.env.FRONTEND_URL
-  ].filter(Boolean),
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
 }));
 
 app.use(express.json());
