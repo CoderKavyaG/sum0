@@ -55,7 +55,12 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 async function startServer() {
-  await initializeCache();
+  try {
+    await initializeCache();
+    console.log('✅ Cache initialized');
+  } catch (err) {
+    console.warn('⚠️ Cache initialization warning:', err.message);
+  }
   
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);

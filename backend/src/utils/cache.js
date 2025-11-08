@@ -1,45 +1,19 @@
-const redis = require('redis');
-
-let redisClient = null;
-let isConnected = false;
+const inMemoryCache = new Map();
 
 async function initializeCache() {
-  try {
-    redisClient = redis.createClient({
-      url: process.env.REDIS_URL || 'redis://localhost:6379',
-      socket: {
-        reconnectStrategy: (retries) => Math.min(retries * 50, 500),
-        connectTimeout: 10000
-      }
-    });
-
-    redisClient.on('error', (err) => {
-      console.error('❌ Redis connection error:', err.message);
-      isConnected = false;
-    });
-
-    redisClient.on('connect', () => {
-      console.log('✅ Redis connected');
-      isConnected = true;
-    });
-
-    await redisClient.connect();
-    console.log('🚀 Cache initialized with Redis');
-  } catch (error) {
-    console.warn('⚠️ Redis unavailable, using in-memory cache:', error.message);
-    redisClient = null;
-  }
+  console.log('🚀 Cache initialized (in-memory)');
 }
 
 async function getCacheKey(key) {
   try {
-    if (!redisClient || !isConnected) {
-      return null;
-    }
-    const value = await redisClient.get(key);
-    if (value) {
-      console.log(`📦 Cache HIT: ${key}`);
-      return JSON.parse(value);
+    if (inMemoryCache.has(key)) {
+      const cachedItem = inMemoryCache.get(key);
+      if (cachedItem.expiry > Date.now()) {
+        console.log(`📦 Cache HIT: ${key}`);
+        return cachedItem.value;
+      } else {
+        inMemoryCache.delete(key);
+      }
     }
     return null;
   } catch (error) {
@@ -50,10 +24,10 @@ async function getCacheKey(key) {
 
 async function setCacheKey(key, value, ttl = 86400) {
   try {
-    if (!redisClient || !isConnected) {
-      return false;
-    }
-    await redisClient.setEx(key, ttl, JSON.stringify(value));
+    inMemoryCache.set(key, {
+      value,
+      expiry: Date.now() + (ttl * 1000)
+    });
     console.log(`💾 Cache SET: ${key} (TTL: ${ttl}s)`);
     return true;
   } catch (error) {
@@ -64,10 +38,7 @@ async function setCacheKey(key, value, ttl = 86400) {
 
 async function deleteCacheKey(key) {
   try {
-    if (!redisClient || !isConnected) {
-      return false;
-    }
-    await redisClient.del(key);
+    inMemoryCache.delete(key);
     console.log(`🗑️ Cache DELETE: ${key}`);
     return true;
   } catch (error) {
@@ -76,12 +47,9 @@ async function deleteCacheKey(key) {
   }
 }
 
-function getRedisClient() {
-  return redisClient;
-}
-
-function isRedisConnected() {
-  return isConnected && redisClient !== null;
+function clearCache() {
+  inMemoryCache.clear();
+  console.log('🗑️ Cache cleared');
 }
 
 module.exports = {
@@ -89,6 +57,5 @@ module.exports = {
   getCacheKey,
   setCacheKey,
   deleteCacheKey,
-  getRedisClient,
-  isRedisConnected
+  clearCache
 };
