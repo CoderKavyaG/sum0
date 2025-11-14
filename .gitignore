@@ -30,3 +30,7 @@ coverage/
 tmp/
 temp/
 *.tmp
+
+test-*.js
+*test*.js
+*.test.js
